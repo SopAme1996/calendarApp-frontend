@@ -1,0 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.calendar-screen {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.rbc-calendar {
+  height: 100vh;
+}
+
+.event-note {
+  text-align: center;
+}
