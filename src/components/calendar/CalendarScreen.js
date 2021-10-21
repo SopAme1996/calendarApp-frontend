@@ -7,26 +7,32 @@ import 'moment/locale/es';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { messages } from '../../helpers/calendar-messages-es';
 import { CalendarEvent } from './CalendarEvent';
-
+import { CalendarModal } from '../Modal/CalendarModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { uiOpenModal } from '../../actions/ui';
+import { eventSetActive } from '../../actions/events';
 
 
 moment.locale('es');
 
 const localizer = momentLocalizer(moment);
 
-const my_list_events = [{
-    title: "Cumpleaños del jefe",
-    start: moment().toDate(),
-    end: moment().add(2, 'hours').toDate(),
-    bgcolor: '#fafafa',
-    user: {
-        _id: 1,
-        name: "Luis Solis"
-    }
-}]
+// const my_list_events = [{
+//     title: "Cumpleaños del jefe",
+//     start: moment().toDate(),
+//     end: moment().add(2, 'hours').toDate(),
+//     bgcolor: '#fafafa',
+//     user: {
+//         _id: 1,
+//         name: "Luis Solis"
+//     }
+// }]
 
 export const CalendarScreen = () => {
     const [view, setView] = useState(localStorage.getItem('lastView') || 'month');
+    const { calendar } = useSelector(state => state);
+
+    const dispatch = useDispatch();
 
     const eventStyleGetter = (event, start, end, isSelected) => {
         const style = {
@@ -46,13 +52,13 @@ export const CalendarScreen = () => {
         localStorage.setItem('lastView', e);
     }
 
-    const onDoubleClickEvent = (e) => {
-        console.log(e);
+    const onDoubleClickEvent = () => {
+        dispatch(uiOpenModal());
     }
 
 
     const onSelectEvent = (e) => {
-        console.log(e);
+        dispatch(eventSetActive(e));
     }
 
     return (
@@ -64,7 +70,7 @@ export const CalendarScreen = () => {
             <section className='calendar-screen'>
                 <Calendar
                     localizer={localizer}
-                    events={my_list_events}
+                    events={calendar.events}
                     startAccessor="start"
                     endAccessor="end"
                     messages={messages}
@@ -78,6 +84,8 @@ export const CalendarScreen = () => {
                     }}
                 />
             </section>
+
+            <CalendarModal />
         </>
     )
 }
