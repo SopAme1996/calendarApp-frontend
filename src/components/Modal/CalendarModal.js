@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Modal from 'react-modal';
 import { customStyles } from '../../helpers/CalendarModal-style';
@@ -8,6 +8,7 @@ import { useForm } from '../hooks/useForm';
 import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux'
 import { uiCloseModal } from '../../actions/ui';
+import { eventAddNewNote } from '../../actions/events';
 
 
 Modal.setAppElement('#root');
@@ -16,8 +17,8 @@ const startDate = moment().minutes(0).seconds(0).add(1, 'hours');
 const endDate = startDate.clone().add(1, 'hours');
 
 const formulario = {
-    f_inicial: startDate.toDate(),
-    f_final: endDate.toDate(),
+    start: startDate.toDate(),
+    end: endDate.toDate(),
     title: '',
     notes: '',
 }
@@ -25,14 +26,24 @@ const formulario = {
 
 export const CalendarModal = () => {
 
-    const [values, handleInputChange, setValues] = useForm(formulario);
+    const [values, handleInputChange, setValues, reset] = useForm(formulario);
     const [dateStart, setStartDate] = useState(startDate.toDate());
     const [dateEnd, setEndDate] = useState(endDate.toDate());
     const [titleValid, setTitleValid] = useState(true);
     const { ui } = useSelector(state => state);
+    const { activeEvent } = useSelector(state => state.calendar);
+
     const dispatch = useDispatch();
 
     const { title, notes } = values;
+
+
+    useEffect(() => {
+        if (activeEvent) {
+            console.log(activeEvent);
+            reset(activeEvent);
+        }
+    }, [activeEvent, reset])
 
     const closeModal = () => {
         dispatch(uiCloseModal());
@@ -42,7 +53,7 @@ export const CalendarModal = () => {
         setStartDate(e);
         setValues({
             ...values,
-            f_inicial: e
+            start: e
         });
 
     }
@@ -51,7 +62,7 @@ export const CalendarModal = () => {
         setEndDate(e);
         setValues({
             ...values,
-            f_final: e
+            end: e
         });
     }
 
@@ -70,10 +81,22 @@ export const CalendarModal = () => {
             return setTitleValid(false);
         }
 
+        //Se guarda la información nueva del usuario
+        dispatch(eventAddNewNote({
+            ...values,
+            id: new Date().getTime(),
+            user: {
+                id: 1996,
+                name: 'Mario Ciau'
+            }
+        }));
+        reset();
+
         setTitleValid(true);
         closeModal();
     }
 
+    console.log(values);
 
     return (
         <Modal

@@ -11,22 +11,12 @@ import { CalendarModal } from '../Modal/CalendarModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiOpenModal } from '../../actions/ui';
 import { eventSetActive } from '../../actions/events';
+import { AddNewNote } from '../ui/AddNewNote';
 
 
 moment.locale('es');
 
 const localizer = momentLocalizer(moment);
-
-// const my_list_events = [{
-//     title: "Cumpleaños del jefe",
-//     start: moment().toDate(),
-//     end: moment().add(2, 'hours').toDate(),
-//     bgcolor: '#fafafa',
-//     user: {
-//         _id: 1,
-//         name: "Luis Solis"
-//     }
-// }]
 
 export const CalendarScreen = () => {
     const [view, setView] = useState(localStorage.getItem('lastView') || 'month');
@@ -86,6 +76,7 @@ export const CalendarScreen = () => {
             </section>
 
             <CalendarModal />
+            <AddNewNote />
         </>
     )
 }
