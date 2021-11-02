@@ -28,7 +28,7 @@
   align-items: center;
   display: flex;
   justify-content: center;
-  transition: opacity .7s ease-in-out;
+  transition: opacity 0.7s ease-in-out;
   z-index: 999;
 }
 
@@ -82,13 +82,32 @@
   align-items: center;
   cursor: pointer;
   transform: rotate(0deg);
-  transition: all .7s ease-in-out;
+  transition: all 0.7s ease-in-out;
 }
 
 .fab.open {
-  transform: rotate(130deg);
+  transform: rotate(135deg);
 }
 
 .fab i {
   font-size: 20px;
 }
+
+.fab_remove {
+  position: absolute;
+  right: 30px;
+  bottom: 80px;
+  width: 40px;
+  height: 40px;
+  border-radius: 100px;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* .fab_remove.active {
+  display: block;
+  opacity: 1;
+} */

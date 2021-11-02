@@ -10,8 +10,9 @@ import { CalendarEvent } from './CalendarEvent';
 import { CalendarModal } from '../Modal/CalendarModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiOpenModal } from '../../actions/ui';
-import { eventSetActive } from '../../actions/events';
+import { eventRemoveNoteActive, eventSetActive } from '../../actions/events';
 import { AddNewNote } from '../ui/AddNewNote';
+import { RemoveNote } from '../ui/RemoveNote';
 
 
 moment.locale('es');
@@ -51,6 +52,10 @@ export const CalendarScreen = () => {
         dispatch(eventSetActive(e));
     }
 
+    const onSelectSlot = (e) => {
+        dispatch(eventRemoveNoteActive());
+    }
+
     return (
         <>
             <header>
@@ -72,11 +77,18 @@ export const CalendarScreen = () => {
                     components={{
                         event: CalendarEvent
                     }}
+                    onSelectSlot={onSelectSlot}
+                    selectable={true}
                 />
             </section>
 
             <CalendarModal />
             <AddNewNote />
+
+            {
+                (calendar.activeEvent) && <RemoveNote />
+            }
+
         </>
     )
 }

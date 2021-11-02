@@ -8,7 +8,7 @@ import { useForm } from '../hooks/useForm';
 import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux'
 import { uiCloseModal } from '../../actions/ui';
-import { eventAddNewNote } from '../../actions/events';
+import { eventAddNewNote, eventRemoveNoteActive, eventUpdated } from '../../actions/events';
 
 
 Modal.setAppElement('#root');
@@ -40,13 +40,22 @@ export const CalendarModal = () => {
 
     useEffect(() => {
         if (activeEvent) {
-            console.log(activeEvent);
-            reset(activeEvent);
+            setValues(activeEvent);
+            setStartDate(activeEvent.start);
+            setEndDate(activeEvent.end);
+        } else {
+            setValues(formulario);
+            setStartDate(startDate.toDate());
+            setEndDate(endDate.toDate());
         }
-    }, [activeEvent, reset])
+    }, [activeEvent, setValues])
 
     const closeModal = () => {
         dispatch(uiCloseModal());
+        dispatch(eventRemoveNoteActive());
+        reset();
+        setStartDate(startDate.toDate());
+        setEndDate(endDate.toDate());
     }
 
     const handleInputStartDate = (e) => {
@@ -82,26 +91,27 @@ export const CalendarModal = () => {
         }
 
         //Se guarda la información nueva del usuario
-        dispatch(eventAddNewNote({
-            ...values,
-            id: new Date().getTime(),
-            user: {
-                id: 1996,
-                name: 'Mario Ciau'
-            }
-        }));
+        if (activeEvent === null) {
+            dispatch(eventAddNewNote({
+                ...values,
+                id: new Date().getTime(),
+                user: {
+                    id: 1996,
+                    name: 'Mario Ciau'
+                }
+            }));
+        } else {
+            dispatch(eventUpdated(values));
+        }
         reset();
 
         setTitleValid(true);
         closeModal();
     }
 
-    console.log(values);
-
     return (
         <Modal
             isOpen={ui.modalOpen}
-            // onAfterOpen={afterOpenModal}
             onRequestClose={closeModal}
             style={customStyles}
             closeTimeoutMS={200}
@@ -110,7 +120,7 @@ export const CalendarModal = () => {
             contentLabel='Modal'
         >
 
-            <h1> Nuevo evento </h1>
+            <h1>{(!activeEvent) ? 'Nuevo Evento' : 'Editar Evento'}</h1>
             <hr />
             <form className="container" onSubmit={handleSave}>
 
