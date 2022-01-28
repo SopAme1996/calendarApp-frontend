@@ -1,9 +1,14 @@
 import React from 'react';
 import './login.css';
 import { RegisterScreen } from './RegisterScreen';
+import { useForm } from '../hooks/useForm';
 
 export const LoginScreen = () => {
-
+    const [lvalues, handleInputChange] = useForm({
+        lmail: '',
+        lpassword: '',
+    });
+    const { lmail, lpassword } = lvalues;
 
     return (
         <div className="container_padre">
@@ -17,6 +22,9 @@ export const LoginScreen = () => {
                                     type="text"
                                     className="form-control"
                                     placeholder="Correo"
+                                    onChange={handleInputChange}
+                                    value={lmail}
+                                    name='lmail'
                                 />
                             </div>
                             <div className="form-group">
@@ -24,6 +32,9 @@ export const LoginScreen = () => {
                                     type="password"
                                     className="form-control"
                                     placeholder="Contraseña"
+                                    onChange={handleInputChange}
+                                    value={lpassword}
+                                    name='lpassword'
                                 />
                             </div>
                             <div className="form-group">

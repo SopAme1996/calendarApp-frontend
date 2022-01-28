@@ -1,6 +1,17 @@
 import React from 'react'
+import { useForm } from '../hooks/useForm'
 
 export const RegisterScreen = () => {
+    const [rvalues, handleInputChange] = useForm({
+        rname: '',
+        rmail: '',
+        rpassword: '',
+        repitePassword: '',
+    });
+
+    const { rname, rmail, rpassword, repitePassword } = rvalues;
+
+    console.log(rvalues);
     return (
         <div className="col-md-6 login-form-2">
             <h3>Registro</h3>
@@ -10,6 +21,9 @@ export const RegisterScreen = () => {
                         type="text"
                         className="form-control"
                         placeholder="Nombre"
+                        onChange={handleInputChange}
+                        value={rname}
+                        name='rname'
                     />
                 </div>
                 <div className="form-group">
@@ -17,6 +31,9 @@ export const RegisterScreen = () => {
                         type="email"
                         className="form-control"
                         placeholder="Correo"
+                        onChange={handleInputChange}
+                        value={rmail}
+                        name='rmail'
                     />
                 </div>
                 <div className="form-group">
@@ -24,6 +41,9 @@ export const RegisterScreen = () => {
                         type="password"
                         className="form-control"
                         placeholder="Contraseña"
+                        onChange={handleInputChange}
+                        value={rpassword}
+                        name='rpassword'
                     />
                 </div>
 
@@ -32,6 +52,9 @@ export const RegisterScreen = () => {
                         type="password"
                         className="form-control"
                         placeholder="Repita la contraseña"
+                        onChange={handleInputChange}
+                        value={repitePassword}
+                        name='repitePassword'
                     />
                 </div>
 
