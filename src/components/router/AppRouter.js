@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Redirect } from 'react-router-dom';
 
 
@@ -6,21 +6,23 @@ import { AuthRouter } from './AuthRouter';
 import { PublicRouter } from './PublicRouter';
 import { PrivateRouter } from './PrivateRouter';
 import { CalendarScreen } from '../calendar/CalendarScreen';
+import { useDispatch, useSelector } from 'react-redux';
+import { startChecking } from '../../actions/auth';
 
 
 export const AppRouter = () => {
-    // const [checking, setChecking] = useState(true);
-    // const [isLoggeIn, setisLoggeIn] = useState(false)
+    const dispatch = useDispatch();
+    const { checking, uid } = useSelector(state => state.auth);
 
-    // useEffect(() => {
+    useEffect(() => {
+        dispatch(startChecking());
+    }, [dispatch]);
 
-    // }, []);
-
-    // if (checking) {
-    //     return (
-    //         <h1>Please, wait....</h1>
-    //     )
-    // }
+    if (checking) {
+        return (
+            <h1>Please, wait....</h1>
+        )
+    }
 
     return (
         <Router>
@@ -28,14 +30,14 @@ export const AppRouter = () => {
                 <PublicRouter
                     path="/auth"
                     component={AuthRouter}
-                    isAuthenticated={false}
+                    isAuthenticated={!!uid}
                 />
 
                 <PrivateRouter
                     exact
                     path="/"
                     component={CalendarScreen}
-                    isAuthenticated={false}
+                    isAuthenticated={!!uid}
                 />
 
                 <Redirect to="/auth/login" />

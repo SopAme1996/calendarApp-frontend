@@ -1,4 +1,7 @@
 import React from 'react'
+import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
+import { startRegister } from '../../actions/auth';
 import { useForm } from '../hooks/useForm'
 
 export const RegisterScreen = () => {
@@ -8,14 +11,23 @@ export const RegisterScreen = () => {
         rpassword: '',
         repitePassword: '',
     });
-
     const { rname, rmail, rpassword, repitePassword } = rvalues;
 
-    console.log(rvalues);
+    const dispath = useDispatch();
+
+    const handleRegister = (e) => {
+        e.preventDefault();
+        if (rpassword === repitePassword) {
+            dispath(startRegister(rname, rmail, rpassword, repitePassword));
+        } else {
+            Swal.fire('Error', 'Password dont match', 'error');
+        }
+    }
+
     return (
         <div className="col-md-6 login-form-2">
             <h3>Registro</h3>
-            <form>
+            <form onSubmit={handleRegister}>
                 <div className="form-group">
                     <input
                         type="text"

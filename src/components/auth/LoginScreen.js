@@ -2,6 +2,9 @@ import React from 'react';
 import './login.css';
 import { RegisterScreen } from './RegisterScreen';
 import { useForm } from '../hooks/useForm';
+import { useDispatch } from 'react-redux';
+import { startLogin } from '../../actions/auth';
+
 
 export const LoginScreen = () => {
     const [lvalues, handleInputChange] = useForm({
@@ -10,13 +13,20 @@ export const LoginScreen = () => {
     });
     const { lmail, lpassword } = lvalues;
 
+    const dispatch = useDispatch();
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        dispatch(startLogin(lmail, lpassword));
+    }
+
     return (
         <div className="container_padre">
             <div className="container login-container">
                 <div className="row">
                     <div className="col-md-6 login-form-1">
                         <h3>Ingreso</h3>
-                        <form>
+                        <form onSubmit={handleLogin}>
                             <div className="form-group">
                                 <input
                                     type="text"
