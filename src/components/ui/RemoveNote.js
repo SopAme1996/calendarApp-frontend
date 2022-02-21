@@ -1,18 +1,18 @@
-import React from 'react'
+import React from "react";
 
-import { useDispatch } from 'react-redux'
-import { enventRemove } from '../../actions/events';
+import { useDispatch } from "react-redux";
+import { eventStartDelete } from "../../actions/events";
 
 export const RemoveNote = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const handleRemoveEvent = () => {
-        dispatch(enventRemove());
-    }
+  const handleRemoveEvent = () => {
+    dispatch(eventStartDelete());
+  };
 
-    return (
-        <button className='btn btn-danger fab_remove'  onClick={handleRemoveEvent}>
-            <i className="fas fa-trash-alt"></i>
-        </button>
-    )
-}
+  return (
+    <button className="btn btn-danger fab_remove" onClick={handleRemoveEvent}>
+      <i className="fas fa-trash-alt"></i>
+    </button>
+  );
+};
